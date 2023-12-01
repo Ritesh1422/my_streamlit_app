@@ -73,7 +73,7 @@ if sel_op2==gop[0]:
     fig=px.bar(subset,x='title',y='vote_count')
 elif sel_op2==gop[1]:
     #subset=df.sort_values(by='popularity')[:100]
-    fig=px.line(subset,x='title',y='value_count')
+    fig=px.line(subset,x='title',y='vote_count')
 elif sel_op2==gop[2]:
     #subset=df.sort_values(by='popularity')[:100]
     fig=px.area(subset,x='title',y='vote_count')
@@ -93,14 +93,23 @@ c2.plotly_chart(fig,use_container_width=True)
 
 #5. adjust layout
 
-# t1,t2=st.tabs(["bivariate","trivariate"])
-# with t1:
-#     col1=st.radio("select the first column for 3rd plot",num_cols)
-#     col2=st.radio("select the first column for 3rd plot",num_cols)
-#     col3=st.radio("select the first column for 3rd plot",num_cols)
-#     fig=px.scatter(df,x=col1,y=col2,title==f'{col1} vs{col2}')
-#     st.plotly_chart(fig,use_container_width=True)
+t1,t2=st.tabs(["Bivariate","Trivariate"])
+num_cols=df.select_dtypes(include=np.number).columns.tolist()
+with t1:
+    c1,c2=st.columns(2)
+    col1=c1.radio("select the first column for scatter plot",num_cols)
+    col2=c2.radio("select the second column for 3rd plot",num_cols)
+    # col3=st.radio("select the first column for 3rd plot",num_cols)
+    fig=px.scatter(df,x=col1,y=col2,title=f'{col1} vs {col2}')
+    st.plotly_chart(fig,use_container_width=True)
 
+with t2:
+    c1,c2,c3=st.columns(3)
+    col1=c1.selectbox("select the first column for scnatter plot",num_cols)
+    col2=c2.selectbox("select the second column for 3rd plot",num_cols)
+    col3=c3.selectbox("select the third column for 3rd plot",num_cols)
+    fig=px.scatter_3d(df,x=col1,y=col2,z=col3,title=f'{col1} vs {col2} vs{col3}',height=700)
+    st.plotly_chart(fig,use_container_width=True)
 #6. how to run app
 #7. open terminal and run:
 #8. stramlit run main.py
